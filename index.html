@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rentlet · Sublets near Northwestern</title>
+<meta name="description" content="Rentlet is a sublet marketplace built by and for Northwestern students. Post your place in minutes, search by dates, price and location, and message students directly.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M32 2C19 2 9 12 9 25c0 17 23 37 23 37s23-20 23-37C55 12 45 2 32 2z' fill='%234e2a84'/%3E%3Cpath d='M20 30l12-10 12 10v10H20z' fill='white'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --purple:#4e2a84;
+    --purple-deep:#36195f;
+    --purple-soft:#efe9f8;
+    --purple-line:#ddd2ee;
+    --ink:#1b1b1f;
+    --muted:#6b6b76;
+    --bg:#ffffff;
+    --bg-alt:#f6f5f8;
+    --card:#ffffff;
+    --line:#e7e5ec;
+    --green:#1a7f4b;
+    --pink:#f3cfd0;
+    --radius:20px;
+    --serif:"Newsreader", Georgia, "Times New Roman", serif;
+    --sans:"Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--sans);color:var(--ink);background:var(--bg);line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+
+  /* NAV */
+  header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:68px}
+  .logo{display:flex;align-items:center;gap:8px;font-family:var(--serif);font-weight:600;font-size:28px;color:var(--purple);letter-spacing:-.02em}
+  .logo svg{width:26px;height:26px}
+  .nav-links{display:flex;gap:28px;font-size:14px;color:var(--muted);font-weight:500}
+  .nav-links a:hover{color:var(--purple)}
+  .btn{display:inline-flex;align-items:center;gap:8px;font:600 14px var(--sans);padding:12px 22px;border-radius:999px;border:1px solid transparent;cursor:pointer;transition:.18s}
+  .btn-dark{background:var(--ink);color:#fff}
+  .btn-dark:hover{background:var(--purple)}
+  .btn-ghost{background:#fff;border-color:var(--line);color:var(--ink)}
+  .btn-ghost:hover{border-color:var(--purple);color:var(--purple)}
+  .btn-lg{padding:15px 28px;font-size:15px}
+
+  /* HERO */
+  .hero{padding:72px 0 40px;background:
+    radial-gradient(900px 400px at 85% -10%, var(--purple-soft), transparent 70%)}
+  .hero-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:56px;align-items:center}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--purple);background:var(--purple-soft);padding:7px 14px;border-radius:999px;margin-bottom:22px}
+  h1{font-family:var(--serif);font-weight:500;font-size:clamp(44px,6vw,76px);line-height:1.02;letter-spacing:-.025em}
+  h1 em{color:var(--purple);font-style:italic}
+  .lede{font-size:18px;color:var(--muted);max-width:520px;margin:24px 0 32px}
+  .cta{display:flex;gap:12px;flex-wrap:wrap}
+  .fine{margin-top:22px;font-size:13px;color:var(--muted)}
+
+  /* search pill */
+  .searchbar{display:flex;align-items:center;background:#fff;border:1px solid var(--line);border-radius:999px;box-shadow:0 6px 24px rgba(40,20,80,.08);padding:8px 8px 8px 22px;gap:22px;margin-bottom:22px;max-width:100%;overflow:hidden}
+  .sb-item small{display:block;font-size:10.5px;color:var(--muted);font-weight:500}
+  .sb-item b{font-size:12.5px;font-weight:600;white-space:nowrap}
+  .sb-go{margin-left:auto;width:38px;height:38px;border-radius:50%;background:var(--ink);display:grid;place-items:center;flex:none}
+  .sb-go svg{width:15px;height:15px;stroke:#fff}
+
+  /* listing card mock */
+  .listing{background:var(--card);border:1px solid var(--line);border-radius:26px;box-shadow:0 24px 60px rgba(40,20,80,.14);overflow:hidden}
+  .listing-photo{position:relative;aspect-ratio:16/10;background:
+    linear-gradient(180deg,#e9edf3 0%,#e9edf3 38%,transparent 38%),
+    linear-gradient(180deg,#d9d2cc,#cfc7c0);}
+  .listing-photo .window{position:absolute;left:6%;top:0;width:44%;height:58%;background:repeating-linear-gradient(90deg,#f4f6f9 0 12px,#dfe6ee 12px 14px)}
+  .listing-photo .bed{position:absolute;right:4%;bottom:6%;width:62%;height:44%;background:linear-gradient(180deg,#f6d6d6,#eab7b9);border-radius:18px 18px 8px 8px;box-shadow:0 -22px 0 -4px #fff inset}
+  .listing-photo .desk{position:absolute;left:5%;bottom:14%;width:26%;height:26%;background:#f4f1ec;border-radius:6px}
+  .tag{position:absolute;left:14px;top:14px;background:#fff;border-radius:999px;font-size:11px;font-weight:600;padding:5px 12px;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+  .listing-body{padding:20px 22px 22px}
+  .listing-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+  .listing h3{font-family:var(--serif);font-weight:500;font-size:24px;letter-spacing:-.01em;line-height:1.15}
+  .meta{font-size:12.5px;color:var(--muted);margin-top:4px}
+  .price{font-size:30px;font-weight:700;letter-spacing:-.02em;text-align:right;line-height:1}
+  .price small{font-size:13px;font-weight:500;color:var(--muted)}
+  .under{font-size:12px;color:var(--green);font-weight:600;text-align:right;margin-top:6px}
+  .dates{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-radius:12px;margin:16px 0}
+  .dates div{padding:9px 14px;font-size:12.5px}
+  .dates div+div{border-left:1px solid var(--line)}
+  .dates small{display:block;font-size:10.5px;color:var(--muted)}
+  .badges{display:flex;gap:8px;flex-wrap:wrap}
+  .pill{font-size:11.5px;font-weight:600;background:var(--bg-alt);border:1px solid var(--line);border-radius:999px;padding:5px 11px}
+  .pill.v{background:var(--purple-soft);border-color:var(--purple-line);color:var(--purple)}
+
+  /* SECTIONS */
+  section{padding:96px 0}
+  .alt{background:var(--bg-alt)}
+  .kicker{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:14px}
+  h2{font-family:var(--serif);font-weight:500;font-size:clamp(34px,4.4vw,54px);line-height:1.06;letter-spacing:-.02em;max-width:720px}
+  h2 em{color:var(--purple);font-style:italic}
+  .sub{color:var(--muted);font-size:17px;max-width:560px;margin-top:16px}
+
+  /* shelf */
+  .chips{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:44px}
+  .chip{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:22px;transition:.2s}
+  .chip:hover{transform:translateY(-3px);border-color:var(--purple-line);box-shadow:0 12px 30px rgba(78,42,132,.1)}
+  .chip b{display:block;font-size:16px;margin-bottom:4px}
+  .chip span{font-size:12px;font-weight:600;letter-spacing:.06em;color:var(--purple)}
+  .chip p{font-size:14px;color:var(--muted);margin-top:8px}
+
+  /* problem */
+  .compare{display:grid;grid-template-columns:1fr 60px 1fr;gap:20px;align-items:stretch;margin-top:48px}
+  .panel{border-radius:24px;padding:30px;border:1px solid var(--line);background:#fff}
+  .panel h4{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:18px}
+  .panel.good{background:var(--purple);border-color:var(--purple);color:#fff}
+  .panel.good h4{color:#d8c8f1}
+  .scatter{display:flex;flex-direction:column;gap:10px}
+  .note{display:flex;justify-content:space-between;gap:12px;background:var(--bg-alt);border:1px dashed #cfcad8;border-radius:12px;padding:12px 14px;font-size:14px}
+  .note i{font-style:normal;color:var(--muted);font-size:13px}
+  .note:nth-child(odd){transform:rotate(-.6deg)}
+  .note:nth-child(even){transform:rotate(.5deg)}
+  .arrow{display:grid;place-items:center;font-size:28px;color:var(--purple)}
+  .ticks{list-style:none;display:flex;flex-direction:column;gap:16px}
+  .ticks li{display:flex;gap:12px;font-size:15px}
+  .ticks li b{display:block;font-weight:600}
+  .ticks li span{color:#d8c8f1;font-size:13.5px}
+  .ticks svg{flex:none;width:20px;height:20px;margin-top:2px;stroke:#fff}
+
+  /* three moves */
+  .moves{display:flex;flex-direction:column;gap:72px;margin-top:56px}
+  .move{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+  .move:nth-child(even) .copy{order:2}
+  .no{font-family:var(--serif);font-style:italic;color:var(--purple);font-size:18px;margin-bottom:10px}
+  .move h3{font-family:var(--serif);font-weight:500;font-size:clamp(28px,3.4vw,40px);line-height:1.1;letter-spacing:-.015em}
+  .move p{color:var(--muted);margin-top:14px;font-size:16.5px;max-width:460px}
+  .mock{background:var(--bg-alt);border:1px solid var(--line);border-radius:26px;padding:24px;display:flex;flex-direction:column;gap:12px}
+  .field{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 16px;display:flex;justify-content:space-between;font-size:14px}
+  .field small{color:var(--muted);font-size:11px;display:block}
+  .field b{font-weight:600}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .photos{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .photos div{aspect-ratio:1;border-radius:12px;background:linear-gradient(135deg,#f0d8da,#e5c2c6)}
+  .photos div:nth-child(2){background:linear-gradient(135deg,#dfe4ec,#c9d2de)}
+  .photos div:nth-child(3){background:linear-gradient(135deg,#ece6dc,#d9d0c1)}
+  .publish{background:var(--ink);color:#fff;text-align:center;font-weight:600;font-size:14px;padding:13px;border-radius:999px}
+  .result{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;display:flex;gap:14px;align-items:center}
+  .thumb{width:64px;height:64px;border-radius:12px;background:linear-gradient(135deg,#f0d8da,#e0b8bd);flex:none}
+  .result b{font-size:14.5px;display:block}
+  .result small{color:var(--muted);font-size:12.5px}
+  .result .p{margin-left:auto;font-weight:700;font-size:15px}
+  .chat{display:flex;flex-direction:column;gap:10px}
+  .bubble{max-width:82%;padding:11px 15px;border-radius:18px;font-size:14px}
+  .bubble.in{background:#fff;border:1px solid var(--line);border-bottom-left-radius:6px}
+  .bubble.out{background:var(--purple);color:#fff;margin-left:auto;border-bottom-right-radius:6px}
+  .verified{font-size:11.5px;color:var(--muted);display:flex;align-items:center;gap:6px;margin-bottom:4px}
+  .verified i{width:8px;height:8px;border-radius:50%;background:var(--green);display:inline-block}
+
+  /* story */
+  .story{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:48px}
+  .step{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:26px;position:relative}
+  .step .num{font-family:var(--serif);font-style:italic;color:var(--purple);font-size:15px}
+  .step h4{font-size:12.5px;font-weight:700;letter-spacing:.14em;color:var(--purple);margin:6px 0 12px}
+  .step p{font-size:14.5px;color:var(--muted)}
+
+  /* trust */
+  .trust{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:44px}
+  .tcard{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:26px}
+  .tcard .ic{width:42px;height:42px;border-radius:12px;background:var(--purple-soft);display:grid;place-items:center;margin-bottom:16px}
+  .tcard .ic svg{width:20px;height:20px;stroke:var(--purple)}
+  .tcard h4{font-size:16px;margin-bottom:6px}
+  .tcard p{font-size:14px;color:var(--muted)}
+
+  /* CTA */
+  .final{background:var(--purple-deep);color:#fff;text-align:center;padding:110px 0;position:relative;overflow:hidden}
+  .final::before{content:"";position:absolute;inset:-40% -10% auto auto;width:560px;height:560px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.12),transparent 65%)}
+  .final h2{margin:0 auto;color:#fff;position:relative}
+  .final h2 em{color:#d8c0ff}
+  .final p{color:#d8c8f1;margin:18px auto 34px;max-width:480px;position:relative}
+  .final .btn{position:relative;background:#fff;color:var(--purple-deep)}
+  .final .btn:hover{background:var(--purple-soft)}
+
+  footer{padding:48px 0;border-top:1px solid var(--line);font-size:14px;color:var(--muted)}
+  .foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:24px}
+  .foot .logo{font-size:24px}
+  .foot nav{display:flex;gap:24px}
+  .foot nav a:hover{color:var(--purple)}
+
+  /* reveal */
+  .rv{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
+  .rv.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
+
+  @media (max-width:900px){
+    .hero-grid,.move{grid-template-columns:1fr;gap:36px}
+    .move:nth-child(even) .copy{order:0}
+    .chips,.trust{grid-template-columns:1fr 1fr}
+    .story{grid-template-columns:1fr 1fr}
+    .compare{grid-template-columns:1fr}
+    .arrow{transform:rotate(90deg);padding:4px}
+    .nav-links{display:none}
+    section{padding:72px 0}
+  }
+  @media (max-width:560px){
+    .chips,.trust,.story{grid-template-columns:1fr}
+    .searchbar{gap:12px;padding-left:16px}
+    .sb-item:nth-child(3){display:none}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="logo" href="#top" aria-label="Rentlet home">
+      Rentlet
+      <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 2C19 2 9 12 9 25c0 17 23 37 23 37s23-20 23-37C55 12 45 2 32 2z" fill="#4e2a84"/><path d="M19 31l13-11 13 11v11H19z" fill="#fff"/></svg>
+    </a>
+    <nav class="nav-links" aria-label="Sections">
+      <a href="#listings">Listings</a>
+      <a href="#problem">Problem</a>
+      <a href="#how">How it works</a>
+      <a href="#story">Story</a>
+    </nav>
+    <a class="btn btn-dark" href="https://rentlet-nu.firebaseapp.com/">Open Rentlet</a>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="wrap hero-grid">
+    <div class="rv">
+      <span class="eyebrow">Sublets · Northwestern</span>
+      <h1>Find your next <em>sublet,</em> student to student.</h1>
+      <p class="lede">Rentlet is a sublet marketplace built by and for NU students. Every listing in one place, instead of scattered Facebook and GroupMe posts.</p>
+      <div class="cta">
+        <a class="btn btn-dark btn-lg" href="https://rentlet-nu.firebaseapp.com/">Browse sublets →</a>
+        <a class="btn btn-ghost btn-lg" href="#how">See how it works</a>
+      </div>
+      <p class="fine">Free to use · Verified school email · Message students directly</p>
+    </div>
+
+    <div class="rv" aria-hidden="true">
+      <div class="searchbar">
+        <div class="sb-item"><small>Where</small><b>Northwestern · Evanston</b></div>
+        <div class="sb-item"><small>When</small><b>Jan 3 – Apr 30, 2027</b></div>
+        <div class="sb-item"><small>Budget</small><b>Up to $1,950</b></div>
+        <div class="sb-go"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></div>
+      </div>
+      <div class="listing">
+        <div class="listing-photo">
+          <span class="tag">Bedroom</span>
+          <div class="window"></div><div class="desk"></div><div class="bed"></div>
+        </div>
+        <div class="listing-body">
+          <div class="listing-top">
+            <div>
+              <h3>Evanston Place Apartments</h3>
+              <div class="meta">Downtown Evanston · Lease takeover · Jan 3 – Jun 12</div>
+            </div>
+            <div>
+              <div class="price">$1,750<small> /mo</small></div>
+              <div class="under">$200 under your budget</div>
+            </div>
+          </div>
+          <div class="dates">
+            <div><small>Move in</small>Jan 3</div>
+            <div><small>Move out</small>Jun 12, 2027</div>
+          </div>
+          <div class="badges">
+            <span class="pill v">Verified school email</span>
+            <span class="pill">Private room in a 2-bed</span>
+            <span class="pill">Fully furnished</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LISTINGS -->
+<section id="listings">
+  <div class="wrap">
+    <p class="kicker rv">One marketplace</p>
+    <h2 class="rv">Every sublet <em>near campus,</em> in one place.</h2>
+    <p class="sub rv">Rooms, apartments and lease takeovers from fellow Wildcats, searchable the way you actually look for housing.</p>
+    <div class="chips">
+      <div class="chip rv"><span>SUMMER</span><b>Internship sublets</b><p>Someone leaving for the summer needs someone to take over.</p></div>
+      <div class="chip rv"><span>LEASE TAKEOVER</span><b>Take over a lease</b><p>Pick up a lease partway through, with dates spelled out.</p></div>
+      <div class="chip rv"><span>PRIVATE ROOM</span><b>Rooms in shared units</b><p>A room in a 2-bed or 4-bed, with house rules up front.</p></div>
+      <div class="chip rv"><span>WHOLE PLACE</span><b>Full apartments</b><p>Studios, 1-beds and more, from Downtown Evanston and beyond.</p></div>
+      <div class="chip rv"><span>FURNISHED</span><b>Move-in ready</b><p>See what stays: bed frame, desk, lamp, and what you keep.</p></div>
+      <div class="chip rv"><span>NEGOTIABLE</span><b>Flexible pricing</b><p>Listings show when the rent is negotiable. Just ask.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section id="problem" class="alt">
+  <div class="wrap">
+    <p class="kicker rv">The problem</p>
+    <h2 class="rv">Scattered posts, <em>scattered replies.</em></h2>
+    <p class="sub rv">A post in one Facebook group. Another in a GroupMe. Replies buried in DMs. When sublets scatter, so do the people who want them.</p>
+
+    <div class="compare">
+      <div class="panel rv">
+        <h4>Your sublet hunt right now</h4>
+        <div class="scatter">
+          <div class="note"><b>NU Class of 2027 GroupMe</b><i>“still available?”</i></div>
+          <div class="note"><b>Facebook group #3</b><i>12 comments</i></div>
+          <div class="note"><b>Instagram DM</b><i>no reply</i></div>
+          <div class="note"><b>Text from a friend</b><i>“my roommate’s cousin?”</i></div>
+          <div class="note"><b>Notes app</b><i>who messaged who??</i></div>
+        </div>
+      </div>
+      <div class="arrow rv" aria-hidden="true">→</div>
+      <div class="panel good rv">
+        <h4>With Rentlet</h4>
+        <ul class="ticks">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg><div><b>One home for every listing</b><span>Photos, rent, location and dates together</span></div></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg><div><b>Filter instead of scroll</b><span>Dates, price and location, in seconds</span></div></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg><div><b>Conversations that stay organized</b><span>Message students directly, in the app</span></div></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg><div><b>Students you can trust</b><span>Verified school email on every profile</span></div></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="wrap">
+    <p class="kicker rv">How it works</p>
+    <h2 class="rv">Three moves, <em>every sublet.</em></h2>
+
+    <div class="moves">
+      <!-- 1 -->
+      <div class="move">
+        <div class="copy rv">
+          <p class="no">No. 1</p>
+          <h3>Post your place in minutes.</h3>
+          <p>Add photos, rent, location and available dates. That’s the whole listing. Mark it negotiable, list what stays, and publish.</p>
+        </div>
+        <div class="mock rv" aria-hidden="true">
+          <div class="photos"><div></div><div></div><div></div></div>
+          <div class="field"><div><small>Listing</small><b>Evanston Place Apartments</b></div><b>$1,750 /mo</b></div>
+          <div class="row2">
+            <div class="field"><div><small>Move in</small><b>Jan 3</b></div></div>
+            <div class="field"><div><small>Move out</small><b>Jun 12, 2027</b></div></div>
+          </div>
+          <div class="publish">Publish listing</div>
+        </div>
+      </div>
+
+      <!-- 2 -->
+      <div class="move">
+        <div class="copy rv">
+          <p class="no">No. 2</p>
+          <h3>Search by dates, price and location.</h3>
+          <p>Tell Rentlet when you need a place, what you can spend and where. See which listings fit, and how far under budget they land.</p>
+        </div>
+        <div class="mock rv" aria-hidden="true">
+          <div class="searchbar" style="margin:0;box-shadow:none">
+            <div class="sb-item"><small>Where</small><b>Evanston</b></div>
+            <div class="sb-item"><small>When</small><b>Jun 1 – Aug 31</b></div>
+            <div class="sb-item"><small>Budget</small><b>Up to $1,950</b></div>
+            <div class="sb-go"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></div>
+          </div>
+          <div class="result"><div class="thumb"></div><div><b>2 Bed / 1 Bath · Evanston</b><small>Jun 1 – Aug 31 · Furnished</small></div><span class="p">$1,250</span></div>
+          <div class="result"><div class="thumb" style="background:linear-gradient(135deg,#dfe4ec,#c4cedc)"></div><div><b>Private room in a 2-bed</b><small>Jan 3 – Jun 12 · Lease takeover</small></div><span class="p">$1,750</span></div>
+        </div>
+      </div>
+
+      <!-- 3 -->
+      <div class="move">
+        <div class="copy rv">
+          <p class="no">No. 3</p>
+          <h3>Message a student, not a stranger.</h3>
+          <p>Reach the person behind the listing straight from the page. Ask about the lease, set up a tour, and agree on a sublease. Everyone is a verified student.</p>
+        </div>
+        <div class="mock rv" aria-hidden="true">
+          <div class="verified"><i></i> Nate · Verified school email</div>
+          <div class="chat">
+            <div class="bubble out">Hi! I’m interested in your apartment. Is it still available?</div>
+            <div class="bubble in">Yes! I’d love to set up a tour. Let me know what time works for you!</div>
+            <div class="bubble out">Saturday afternoon works. Is the rent negotiable?</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST -->
+<section class="alt">
+  <div class="wrap">
+    <p class="kicker rv">Built for students</p>
+    <h2 class="rv">Clear details. <em>Nothing hidden.</em></h2>
+    <div class="trust">
+      <div class="tcard rv">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.500-1 8-4 8-9V6z"/><path d="m9 12 2 2 4-4"/></svg></div>
+        <h4>Verified school emails</h4>
+        <p>Listings come from students with a confirmed school email, so you know who you’re talking to.</p>
+      </div>
+      <div class="tcard rv">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg></div>
+        <h4>Costs up front</h4>
+        <p>See a first-month estimate on each listing, plus how it compares to your budget.</p>
+      </div>
+      <div class="tcard rv">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></div>
+        <h4>See the lease first</h4>
+        <p>Rentlet reminds you to never pay before you’ve seen the lease, and every listing has a report button.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STORY -->
+<section id="story">
+  <div class="wrap">
+    <p class="kicker rv">A sublet in four chapters</p>
+    <h2 class="rv">Watch Emily <em>find her subletter.</em></h2>
+    <div class="story">
+      <div class="step rv"><span class="num">I</span><h4>PERSONA</h4><p>Emily is a Northwestern student leaving Evanston for a summer internship. She needs someone to sublet her apartment while she’s away.</p></div>
+      <div class="step rv"><span class="num">II</span><h4>PROBLEM</h4><p>She posts in multiple Facebook groups and GroupMe chats, but the messages are scattered and hard to track.</p></div>
+      <div class="step rv"><span class="num">III</span><h4>PAYOFF</h4><p>Emily finds Rentlet and creates a listing with photos, rent, location and available dates.</p></div>
+      <div class="step rv"><span class="num">IV</span><h4>FINISH</h4><p>Another Northwestern student finds the listing and reaches out. They chat in the app, tour the place, and arrange the sublease.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<div class="final">
+  <div class="wrap">
+    <h2 class="rv">Find a place, <em>or the person for yours.</em></h2>
+    <p class="rv">Browse sublets from fellow Wildcats, or post yours in minutes.</p>
+    <a class="btn btn-lg rv" href="https://rentlet-nu.firebaseapp.com/">Open Rentlet →</a>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div>
+      <a class="logo" href="#top">Rentlet</a>
+      <p style="margin-top:6px">A sublet marketplace built by and for NU students.</p>
+    </div>
+    <nav aria-label="Footer">
+      <a href="#listings">Listings</a>
+      <a href="#how">How it works</a>
+      <a href="#story">Story</a>
+      <a href="https://rentlet-nu.firebaseapp.com/">Open app</a>
+    </nav>
+    <p>© 2026 Rentlet · Not affiliated with Northwestern University</p>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    var els = document.querySelectorAll('.rv');
+    if(!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('in')});return;}
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}
+      });
+    },{threshold:.12});
+    els.forEach(function(e,i){e.style.transitionDelay=(i%3)*70+'ms';io.observe(e);});
+  })();
+</script>
+</body>
+</html>
