@@ -40,6 +40,7 @@
   .logo svg{width:26px;height:26px}
   .nav-links{display:flex;gap:28px;font-size:14px;color:var(--muted);font-weight:500}
   .nav-links a:hover{color:var(--purple)}
+  .nav-actions{display:flex;align-items:center;gap:8px}
   .btn{display:inline-flex;align-items:center;gap:8px;font:600 14px var(--sans);padding:12px 22px;border-radius:999px;border:1px solid transparent;cursor:pointer;transition:.18s}
   .btn-dark{background:var(--ink);color:#fff}
   .btn-dark:hover{background:var(--purple)}
@@ -194,9 +195,13 @@
     section{padding:72px 0}
   }
   @media (max-width:560px){
+    .nav-actions .btn{padding:9px 12px;font-size:12px}
     .chips,.trust,.story{grid-template-columns:1fr}
     .searchbar{gap:12px;padding-left:16px}
     .sb-item:nth-child(3){display:none}
+  }
+  @media (max-width:380px){
+    .nav-actions .btn{padding:8px 8px}
   }
 </style>
 </head>
@@ -214,7 +219,10 @@
       <a href="#how">How it works</a>
       <a href="#story">Story</a>
     </nav>
-    <a class="btn btn-dark" href="https://rentlet-nu.firebaseapp.com/">Open Rentlet</a>
+    <div class="nav-actions">
+      <a class="btn btn-ghost" href="https://forms.gle/iBwcKXqjZE1KkZfu5" target="_blank" rel="noopener noreferrer">Contact</a>
+      <a class="btn btn-dark" href="https://rentlet-nu.firebaseapp.com/">Open Rentlet</a>
+    </div>
   </div>
 </header>
 
